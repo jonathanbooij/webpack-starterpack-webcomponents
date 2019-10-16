@@ -1,24 +1,17 @@
-/** https://ayushgp.github.io/html-web-components-using-vanilla-js/ */
+/**
+ * WebComponents:
+ * https://ayushgp.github.io/html-web-components-using-vanilla-js/
+ *
+ * CSS Modules:
+ * https://github.com/css-modules/css-modules */
+/**  */
 
-(async () => {
-    const res = await fetch('/src/components/candle/candle.html');
-    const textTemplate = await res.text();
-    const HTMLTemplate = new DOMParser().parseFromString(textTemplate, 'text/html')
-        .querySelector('template');
+import BaseComponent from '../base-component/base-component';
 
-    class Candle extends HTMLElement {
-        shadowRoot;
-
-        constructor() {
-            super();
-        }
-
-        connectedCallback() {
-            this.shadowRoot = this.attachShadow({mode: 'open'});
-            const instance = HTMLTemplate.content.cloneNode(true);
-            this.shadowRoot.appendChild(instance);
-        }
+class Candle extends BaseComponent {
+    static bootstrap () {
+        super.bootstrap(Candle, __filename);
     }
+}
 
-    customElements.define('c-candle', Candle);
-})();
+Candle.bootstrap();

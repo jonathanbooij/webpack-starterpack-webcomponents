@@ -1,1 +1,2 @@
-import { Candle } from './components/candle/candle';
+import './main.scss';
+import './components/candle/candle';

@@ -23,11 +23,17 @@ module.exports = {
                     {
                         loader: 'css-loader',
                         options: {
-                            modules: true
+                            modules: true,
+                            sourceMap: true,
                         }
                     },
                     // sass-loader
-                    { loader: 'sass-loader' }
+                    {
+                        loader: 'sass-loader',
+                        options: {
+                            sourceMap: true
+                        }
+                    }
                 ]
             },
             /** Babel */
@@ -46,5 +52,9 @@ module.exports = {
                 }
             }
         ]
+    },
+    context: __dirname,
+    node: {
+        __filename: true
     }
 };
