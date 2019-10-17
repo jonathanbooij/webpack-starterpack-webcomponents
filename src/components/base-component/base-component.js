@@ -6,41 +6,39 @@
  * https://github.com/css-modules/css-modules */
 
 class BaseComponent extends HTMLElement {
-    shadowRoot;
-
     constructor () {
         super();
     }
 
-    static moduleName = null;
+    static componentName = null;
 
-    static getModuleName () {
-        if (null === BaseComponent.moduleName) {
-            throw new Error('call setModuleName in components extending BaseComponent');
+    static getComponentName () {
+        if (null === BaseComponent.componentName) {
+            throw new Error('call setComponentName in components extending BaseComponent');
         }
 
-        return this.moduleName;
+        return this.componentName;
     }
 
-    static setModuleName (filename) {
-        BaseComponent.moduleName = /[^/]*$/
+    static setComponentName (filename) {
+        BaseComponent.componentName = /[^/]*$/
             .exec(filename)[0]
             .replace(/\.[^/.]+$/, '');
     }
 
     static bootstrap (className, fileName) {
-        this.setModuleName(fileName);
-        customElements.define(this.getModuleName() + '-component', className);
+        this.setComponentName(fileName);
+        customElements.define(this.getComponentName() + '-component', className);
     }
 
-    async loadModuleFile (extension) {
-        const res = await fetch('/src/components/' + BaseComponent.getModuleName() + '/' + BaseComponent.getModuleName() + extension);
+    async loadComponentFile (extension) {
+        const res = await fetch('/src/components/' + BaseComponent.getComponentName() + '/' + BaseComponent.getComponentName() + extension);
         return await res.text();
 
     }
 
     async loadHTML () {
-        const textTemplate = await this.loadModuleFile('.html');
+        const textTemplate = await this.loadComponentFile('.html');
         const HTMLTemplate = new DOMParser().parseFromString(
             textTemplate, 'text/html'
         ).querySelector('template');
@@ -49,7 +47,7 @@ class BaseComponent extends HTMLElement {
     };
 
     async loadCSS () {
-        const cssTemplate = await this.loadModuleFile('.scss');
+        const cssTemplate = await this.loadComponentFile('.scss');
         const sheet = new CSSStyleSheet();
         sheet.replaceSync(cssTemplate);
 
@@ -57,9 +55,9 @@ class BaseComponent extends HTMLElement {
     };
 
     async connectedCallback () {
-        this.shadowRoot = this.attachShadow({ mode: 'open' });
-        this.shadowRoot.adoptedStyleSheets = [await this.loadCSS()];
-        this.shadowRoot.appendChild(await this.loadHTML());
+        const shadowRoot = this.attachShadow({ mode: 'open' });
+        shadowRoot.adoptedStyleSheets = [await this.loadCSS()];
+        shadowRoot.appendChild(await this.loadHTML());
     }
 }
 
