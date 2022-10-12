@@ -24,7 +24,7 @@
     "node-sass": "^4.12.0",
     "sass": "^1.23.0",
     "sass-loader": "^8.0.0",
-    "subfont": "^3.7.0",
+    "subfont": "^6.12.1",
     "ts-loader": "^6.2.0",
     "typescript": "^3.6.3",
     "webpack": "^4.41.0",
